@@ -1,0 +1,499 @@
+\PassOptionsToPackage{main=english, polutonikogreek}{babel}
+\documentclass[10pt,xcolor={dvipsnames}, aspectratio=169]{beamer}
+\usetheme[]{Feather}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{makecell}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{tcolorbox}
+\usepackage{libertine}
+\usepackage{xcolor}
+\usepackage{pgfplots}
+\usepackage{parskip}
+\usepackage{neuralnetwork}
+\usepackage{xpatch}
+\usepackage[T1]{fontenc}
+\usepackage{zi4}
+\usepackage{soul}
+\usepackage{multirow, multicol}
+\usepackage{academicons}
+\usepackage{fontawesome}
+\usepackage{pifont}
+\usepackage{colortbl}
+\usepackage[toc]{multitoc}
+\usepackage{blindtext}
+\usepackage{hologo}
+\usepackage{xspace}
+\usepackage{textgreek}
+\usepackage[or]{teubner}
+\usepackage{caption}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usetikzlibrary{shapes.gates.logic.US,shapes.gates.logic.IEC}
+\usetikzlibrary{automata}
+\usetikzlibrary{shapes}
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows}
+\usetikzlibrary{positioning,calc}
+\pgfplotsset{compat=1.18}
+
+\newminted[ccode]{c}{frame=lines, framesep=2mm, baselinestretch=1.2, fontsize=\footnotesize, style=pastie}
+
+\newminted[latexcode]{latex}{frame=lines, frameseo=2mm, baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=||}
+\definecolor{cadetgrey}{rgb}{0.57, 0.64, 0.69}
+\definecolor{latexBird}{HTML}{008080}
+\definecolor{darkGreen}{HTML}{43a343}
+
+\setbeamertemplate{itemize item}{\ding{52}}
+\setbeamertemplate{caption}[numbered]
+\setbeamercolor{background canvas}{bg=cadetgrey!10}
+\newcommand{\tac}{\centering\arraybackslash}
+
+\xpatchcmd{\linklayers}{\nn@lastnode}{\lastnode}{}{}
+\xpatchcmd{\linklayers}{\nn@thisnode}{\thisnode}{}{}
+\tikzset{%
+  every neuron/.style={
+    circle,
+    draw,
+    minimum size=1cm
+  },
+  neuron missing/.style={
+    draw=none, 
+    scale=2,
+    text height=0.333cm,
+    execute at begin node=\color{black}$\vdots$
+  },
+}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\tikzset{
+        treenode/.style={align=center,inner sep=0pt},
+        % Expanded nodes
+        node_expanded/.style={treenode, circle, darkGreen, draw=darkGreen, fill=cadetgrey!10, text width=0.8cm},
+        % Non-expanded nodes
+        node_non_expanded/.style={treenode, circle, red, draw=red, fill=cadetgrey!10, text width=0.8cm},
+        % Leaf nodes
+        node_leaf/.style={treenode, rectangle, black, fill=black, minimum width=0.3cm, minimum height=0.3cm},
+        % Cost nodes
+        node_cost/.style={treenode, rectangle, black, dashed, draw=black, minimum width=0.5cm, minimum height=0.5cm}
+}
+\hypersetup{
+pdftitle={Latex Workshop},
+}
+%-------------------------------------------------------
+% INFORMATION IN THE TITLE PAGE
+%-------------------------------------------------------
+\title[Shiraz University]{\includegraphics[width=0.35\textwidth]{Images/latex_long.png}}
+\author{\textit{\textbf{Alireza Rostami}}}
+\institute[Shiraz Universtiy]
+{
+	Department of Computer Science, Engineering \& IT \\
+	Shiraz University
+}
+\date{August, 2022}
+
+\begin{document}
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+
+\begin{frame}{Overview}
+    \begin{multicols*}{2}
+        \tableofcontents
+    \end{multicols*}
+\end{frame}
+
+\section{TikZ}
+
+\begin{frame}[plain,noframenumbering]
+    	\finalpage{\textcolor{Black}{\LARGE\textbf{TikZ}}}
+\end{frame}
+
+\subsection{Introduction}
+\begin{frame}[fragile]{TikZ introduction}
+    TikZ is probably the most complex and powerful tool to create graphic elements in \LaTeX \xspace. Starting with a simple example, this segment introduces some basic concepts: drawing lines, dots, curves, circles, rectangles, trees, graphs etc.
+    
+    Load the tikz package by including the line \mintinline{latex}{\usepackage{tikz}} in the preamble of your document.
+\end{frame}
+
+\begin{frame}[fragile]{TikZ introduction - Continued}
+    Here's a simple example.
+
+\begin{minted}[baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=|||,]{latex}
+        
+\documentclass{article} \usepackage{tikz}
+\begin{document}
+    \begin{tikzpicture}
+        \draw[gray, thick] (-1,2) -- (2,-4);
+        \draw[gray, thick] (-1,-1) -- (2,2);
+        \filldraw[black] (0,0) circle (2pt) node[anchor=west]{Intersection point};
+    \end{tikzpicture}
+\end{document}
+
+        \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{TikZ introduction - Continued}
+    In this example two lines and one point are drawn. To add a line the command \mintinline{latex}{\draw[gray, thick]} defines a graphic element whose colour is gray and with a thick stroke. The line is actually defined by it's two endpoints, (-1,2) and (2,-4), joined by --.
+    
+    The point is actually a circle drawn by \mintinline{latex}{\filldraw[black]}, this command will not only draw the circle but fill it using black. In this command the centre point (0,0) and the radius (2pt) are declared. Next to the point is a node, which is actually a box containing the text intersection point, and anchored at the west of the point.
+
+    \textcolor{red}{Note}: It's important to notice the semicolon ; used at the end of each draw command.
+
+    \textcolor{red}{Note}: The tikzfigure environment can be enclosed inside a figure or similar environment
+\end{frame}
+
+\subsection{Basic elements}
+\begin{frame}[fragile]{TikZ's basic elements}
+    In this subsection we provide some examples showing how to create some basic graphic elements which can be combined to create more elaborate figures.
+
+\begin{minted}[baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=|||,]{latex}
+        
+\documentclass{article} \usepackage{tikz}
+\begin{document}
+    \begin{tikzpicture}
+    \draw (-2,0) -- (2,0);
+    \filldraw [gray] (0,0) circle (2pt);
+    \draw (-2,-2) .. controls (0,0) .. (2,-2);
+    \draw (-2,2) .. controls (-1,0) and (1,0) .. (2,2);
+    \end{tikzpicture}
+\end{document}
+
+        \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{TikZ's basic elements - Continued}
+    There are three basic commands in this example:
+    \begin{description}
+        \item[\mintinline{latex}{\draw (-2,0) -- (2,0);}] This defines a line whose endpoint are (-2,0) and (2,0).
+        \item[\mintinline{latex}{\filldraw [gray] (0,0) circle (2pt);}] The point is created as a very small gray circle centred at (0,0) and whose radius is (2pt). The \mintinline{latex}{\filldraw} command is used to draw elements and fill them with a specific colour. See the next section for more examples.
+        \item[\mintinline{latex}{\draw (-2,2) .. controls (-1,0) and (1,0) .. (2,2);}] Draws a Bézier curve. There are 4 points defining it: (-2,2) and (2,2) are its endpoints, (-1,0) and (1,0) are control points that determine "how curved" it is. You can think of these two points as "attractor points".
+        
+    \end{description}
+
+\end{frame}
+
+
+\subsection{Basic geometric shapes}
+\begin{frame}[fragile]{TikZ's basic geometric shapes}
+Geometric figures can be constructed from simpler elements so let's start with circles, ellipses and arcs.
+
+\begin{minted}[baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=|||,]{latex}
+        
+\documentclass{article} \usepackage{tikz}
+\begin{document}
+    \begin{tikzpicture}
+        \filldraw[color=red!60, fill=red!5, very thick](-1,0) circle (1.5);
+        \fill[blue!50] (2.5,0) ellipse (1.5 and 0.5);
+        \draw[ultra thick, ->] (6.5,0) arc (0:220:1);
+    \end{tikzpicture}
+\end{document}
+
+        \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{TikZ's basic elements - Continued}
+    There are three basic commands in this example:
+    \begin{description}
+        \item[\mintinline{latex}{\filldraw[color=red!60, fill=red!5, very thick](-1,0) circle (1.5);}] This command was used in the previous section to draw a point, but in this instance there are some additional parameters inside the brackets. These are explained below:
+        \setbeamertemplate{itemize items}[circle]
+        \setlength{\itemsep}{0.5mm}
+        \begin{itemize}
+            \item color=red!60: The colour of the ring around the circle is set to 60\% red (lighter than "pure" red).
+            \item fill=red!5: The circle is filled with an even lighter shade of red.
+            \item very thick: This parameter defines the thickness of the stroke.
+        \end{itemize}
+        \end{description}
+\end{frame}
+\begin{frame}[fragile]{TikZ's basic elements - Continued}
+    \begin{description}
+            \item[\mintinline{latex}{\fill[blue!50] (2.5,0) ellipse (1.5 and 0.5);}] To create an ellipse you provide a centre point (2.5,0), and two radii: horizontal and vertical (1.5 and 0.5 respectively). Also notice the command fill instead of draw or filldraw, this is because, in this case, there's no need to control outer and inner colours.
+
+        \item[\mintinline{latex}{\draw[ultra thick, ->] (6.5,0) arc (0:220:1);}] This command will draw an arc starting at (6.5,0). The extra parameter -> indicates that the arc will have an arrow at the end. In addition to the starting point you must provide three additional values: the starting and ending angles, and the radius; here, these three parameter values are provided in the format (0:220:1).
+        
+    \end{description}
+\end{frame}
+
+\subsection{Diagrams}
+\begin{frame}[fragile]{TikZ's diagrams}
+Nodes are probably the most versatile elements in TikZ. 
+\begin{minted}[baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=|||,]{latex}
+        
+\documentclass{article} \usepackage{tikz} \usetikzlibrary{positioning}
+\begin{document}
+\begin{tikzpicture}[
+    roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},
+    squarednode/.style={rectangle, draw=red!60, fill=red!5, very thick, minimum size=5mm},]
+    % Nodes
+    \node[squarednode]      (maintopic)                              {2};
+    \node[roundnode]        (uppercircle)       [above=of maintopic] {1};
+    \node[squarednode]      (rightsquare)       [right=of maintopic] {3};
+    \node[roundnode]        (lowercircle)       [below=of maintopic] {4};
+    % Lines
+    \draw[->] (uppercircle.south) -- (maintopic.north);
+    \draw[->] (maintopic.east) -- (rightsquare.west);
+    \draw[->] (rightsquare.south) .. controls +(down:7mm) and +(right:7mm) .. (lowercircle.east);
+\end{tikzpicture} \end{document}
+
+        \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{TikZ's diagrams - Continued}
+There are essentially three commands in this figure: A node definition, a node declaration and lines that join two nodes.
+    \begin{description}
+        \item[\mintinline{latex}{roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm}}] Passed as a parameter to the tikzpicture environment. It defines a node that will be referenced as roundnode: this node will be a circle whose outer ring will be drawn using the colour green!60 and will be filled using green!5. The stroke will be very thick and its minimum size is 7mm. The line below this defines a second rectangle-shaped node called squarednode, using similar parameters.
+        \item[\mintinline{latex}{\node[squarednode] (maintopic) {2};}] This will create a squarednode, as defined in the previous command. This node will have an id of maintopic and will contain the number 2. If you leave an empty space inside the braces no text will be displayed.
+        \end{description}
+\end{frame}
+\begin{frame}[fragile]{TikZ's diagrams - Continued}
+    \begin{description}
+        \item[\mintinline{latex}{[above=of maintopic]}] Notice that all but the first node have an additional parameter that determines its position relative to other nodes. For instance, \mintinline{latex}{[above=of maintopic]} means that this node should appear above the node named maintopic. For this positioning system to work you have to add \usetikzlibrary{positioning} to your preamble. Without the positioning library, you can use the syntax above of=maintopic instead, but the positioning syntax is more flexible and powerful: you can extend it to write above=3cm of maintopic i.e. control the actual distance from maintopic.
+
+        \item[\mintinline{latex}{\draw[->] (uppercircle.south) -- (maintopic.north);}] An arrow-like straight line will be drawn. The syntax has been already explained in the basic elements section. The only difference is the manner in which we write the endpoints of the line: by referencing a node (this is why we named them) and a position relative to the node.
+    \end{description}
+\end{frame}
+
+\subsection{Trees}
+\begin{frame}[fragile]{TikZ's trees}
+\begin{minted}[baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=|||,]{latex}
+        
+\documentclass{article} \usepackage{tikz}
+% defining universal styles
+\tikzset{
+    treenode/.style={align=center,inner sep=0pt},
+    % Expanded nodes
+    node_expanded/.style={treenode, circle, green, draw=green, fill=white, text width=0.8cm},
+    % Non-expanded nodes
+    node_non_expanded/.style={treenode, circle, red, draw=red, fill=white, text width=0.8cm},
+    % Leaf nodes
+    node_leaf/.style={treenode, rectangle, black, fill=black, minimum width=0.3cm, minimum height=0.3cm},
+    % Cost nodes
+    node_cost/.style={treenode, rectangle, black, dashed, 
+        draw=black, minimum width=0.5cm, minimum height=0.5cm
+    }
+}
+        \end{minted}
+\end{frame}
+\begin{frame}[fragile]{TikZ's trees - Continued}
+\begin{minted}[baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=|||,]{latex}
+
+\begin{document}
+    \begin{tikzpicture}[
+        ->, level/.style={level distance=1.5cm},
+        level 1/.style={sibling distance=6cm},
+        level 2/.style={sibling distance=3cm},
+        level 3/.style={sibling distance=1.5cm}
+        ]
+        \node[node_expanded] {S} 
+            child { node[node_expanded]{A} 
+                child { node[node_non_expanded]{C} 
+                    child { node[node_leaf]{Z} }
+                    child { node[node_cost] {2} }
+                }
+                child { node[node_non_expanded]{F} } 
+            }
+            child { node[node_non_expanded]{B} };
+\end{tikzpicture} \end{document}
+
+        \end{minted}
+\end{frame}
+
+\subsection{Nodes}
+\begin{frame}[fragile]{TikZ's nodes}
+    Anything can be a node. Pictures, mathematical formals, matrices, etc. 
+\begin{minted}[baselinestretch=1.2, fontsize=\footnotesize, style=pastie, escapeinside=|||,]{latex}
+        
+\documentclass{article} \usepackage{tikz} \usetikzlibrary{positioning} \begin{document}
+\begin{tikzpicture}
+    \node (C1) at (0,0) {
+        \(\begin{array}{|c|} \hline
+            a \vee b \vee c \\
+            \hline \end{array}\)
+    };
+    \node[right=5mm of C1] (C2) {
+        \(\begin{array}{|c|} \hline
+            \neg a \vee \neg b \vee \neg c \\
+            \hline \end{array}\)
+    };
+    \draw[->] (C1) edge [bend left = 42.5, red] (C2);
+    \draw[->] (C2) edge [bend right = 60, blue] (C1);
+\end{tikzpicture} \end{document}
+        \end{minted}
+\end{frame}
+
+\section{Final challenges}
+\begin{frame}{Challenge I}
+    Try to create this:\\
+    \begin{center}
+        \begin{tikzpicture}
+    % set up the nodes
+    \node (C1) at (0,0) {$
+        \begin{array}{|c|c!{\color{red}\vrule width 2.5pt}c|c|c|}
+            \hline
+            5&2&3&4&5 \\\hline
+        \end{array}$
+    };
+    \node[below=0.4cm of C1] (C2) { $
+        \begin{array}{|c|c!{\color{red}\vrule width 2.5pt}c|c|c|}
+            \hline
+            4&3&5&1&4 \\\hline
+        \end{array}$
+    };
+    \node[below=0.4cm of C2] (C3) { $
+        \begin{array}{|c|c|c!{\color{red}\vrule width 2.5pt}c|c|}
+            \hline
+            4&3&5&1&4 \\\hline
+        \end{array}$
+    };
+    \node[below=0.4cm of C3] (C4) { $
+        \begin{array}{|c|c|c!{\color{red}\vrule width 2.5pt}c|c|}
+            \hline
+            2&1&3&2&4 \\\hline
+        \end{array}$
+    };
+    \node[right=3cm of C1] (nC1) { $
+        \begin{array}{|c|c!{\color{red}\vrule width 2.5pt}c|c|c|}
+            \hline
+            5&2&5&1&4 \\\hline
+        \end{array}$
+    };
+    \node[below=0.4cm of nC1] (nC2) { $
+        \begin{array}{|c|c!{\color{red}\vrule width 2.5pt}c|c|c|}
+            \hline
+            4&3&3&4&5 \\\hline
+        \end{array}$
+    };
+    \node[below=0.4cm of nC2] (nC3) { $
+        \begin{array}{|c|c|c!{\color{red}\vrule width 2.5pt}c|c|}
+            \hline
+            4&3&5&2&4 \\\hline
+        \end{array}$
+    };
+    \node[below=0.4cm of nC3] (nC4) { $
+        \begin{array}{|c|c|c!{\color{red}\vrule width 2.5pt}c|c|}
+            \hline
+            2&1&3&1&4 \\\hline
+        \end{array}$
+    };
+    \node[below right=0.15cm and 1.25cm of C1, draw, circle, minimum size=.5cm] (transient_1) {};
+    \node[below right=0.15cm and 1.25cm of C3, draw, circle, minimum size=.5cm] (transient_2) {};
+    % draw arrows and text between them
+    \draw[->] (C1) edge [bend left = 15] (transient_1) node {};
+    \draw[->] (C2) edge [bend right = 15] (transient_1) node {};
+    \draw[->] (transient_1) edge [bend left = 15] (nC1) node {};
+    \draw[->] (transient_1) edge [bend right = 15] (nC2) node {};
+    \draw[->] (C3) edge [bend left = 15] (transient_2) node {};
+    \draw[->] (C4) edge [bend right = 15] (transient_2) node {};
+    \draw[->] (transient_2) edge [bend left = 15] (nC3) node {};
+    \draw[->] (transient_2) edge [bend right = 15] (nC4) node {};
+    \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Challenge II}
+    Try to create this:\\
+            \begin{center}
+        \begin{tikzpicture}[shorten >=1pt,node distance=2.2cm,on grid,auto] 
+            \node[state,initial] (00)       {$00$}; 
+            \node[state] (01) [right=of 00] {$01$}; 
+            \node[state,accepting] (02) [right=of 01] {$02$};
+            \node[state,accepting] (10) [below=of 00] {$10$}; 
+            \node[state] (11) [right=of 10] {$11$}; 
+            \node[state] (12) [right=of 11] {$12$}; 
+            \node[state] (20) [below=of 10] {$20$}; 
+            \node[state,accepting] (21) [right=of 20] {$21$}; 
+            \node[state] (22) [right=of 21] {$22$}; 
+            \path[->] 
+                (00) edge node {b} (01)
+                     edge node {a} (10)
+                (01) edge node {b} (02)
+                     edge node {a} (11)
+                (02) edge [bend right = 35] node {b} (00)
+                     edge node {a} (12)
+                (10) edge node {a} (20)
+                     edge node {b} (11)
+                (11) edge node {b} (12)
+                     edge node {a} (21)
+                (12) edge node {a} (22)
+                     edge [bend right=35] node [pos=0.25] {b} (10)
+                (20) edge node {b} (21)
+                     edge [bend left = 35] node [pos=0.25] {a} (00)
+                (21) edge node {b} (22)
+                     edge [bend left = 35] node [pos=0.25] {a} (01)
+                (22) edge [bend left = 35] node [pos=0.25] {a} (02)
+                     edge [bend right = 35] node [pos=0.25] {b} (20)
+                ;
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Challenge II}
+    Try to create this:\\ \smallskip
+         \begin{center}
+        \begin{tikzpicture}[
+            ->, 
+            level/.style={level distance=1.4cm},
+            level 1/.style={sibling distance=4.5cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm},
+            level 4/.style={sibling distance=1cm, level distance=1cm},
+            every node/.style={solid}
+        ]
+            \node[node_expanded] {S} 
+                child { node[node_expanded]{A} edge from parent [black, dashed]
+                    child { node[node_expanded]{C}
+                    child { node[node_leaf]{Z} }
+                    edge from parent node[left]{2} }
+                    child { node[node_non_expanded]{F} 
+                    child { node[node_cost]{7} }
+                    edge from parent node[right]{5} }
+                edge from parent node[above]{2} }
+                child { node[node_expanded]{B} edge from parent [black, dashed]
+                    child { node[node_expanded]{D}
+                        child { node[node_non_expanded]{G} 
+                            child { node[node_cost]{7} }
+                        edge from parent node[left]{3} }
+                    edge from parent node[left]{3} }
+                    child { node[node_expanded]{E} 
+                        child { node[node_non_expanded]{D} 
+                            child { node[node_cost]{7} }
+                        edge from parent node[left]{4} }
+                        child { node[node_non_expanded]{G} 
+                            child { node[node_cost]{8} }
+                        edge from parent node[right]{5} }
+                    edge from parent node[right]{2} }
+                edge from parent node[left]{1} }
+                child { node[node_expanded]{C} edge from parent [magenta]
+                    child { node[node_non_expanded]{D} edge from parent [black, dashed]
+                    child { node[node_cost]{8} }
+                    edge from parent node[left]{5} }
+                    child { node[node_non_expanded]{F} edge from parent [black, dashed]
+                    child { node[node_cost]{7} }
+                    edge from parent node[left]{4} }
+                    child { node[node_expanded]{G} edge from parent [magenta]
+                    child { node[node_cost]{5} }
+                    edge from parent node[right]{2} }
+                edge from parent node[above]{3} }
+            ;
+        \end{tikzpicture}
+    \end{center}
+
+\end{frame}
+
+    
+\section{References}
+\begin{frame}[plain,noframenumbering]
+    \finalpage{\textcolor{Black}{\LARGE\textbf{References}}}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+		\nocite{*}
+		\bibliographystyle{unsrt}
+		\bibliography{Bibliography}
+\end{frame}
+\end{document} 
